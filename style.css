@@ -1,0 +1,39 @@
+body {
+  background: black;
+  padding: 0px;
+  margin: 0px;
+}
+video, canvas,
+div {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+video {
+  z-index: -1;
+}
+
+canvas {
+  opacity: 0.5;
+  z-index: 1;
+}
+
+#instructions {
+  width: 100vw;
+  height: 100vh;
+  z-index: 2;
+  font-family: Arial;
+  font-size: 7vw;
+  color: black;
+}
+
+span {
+  color: red;
+  display: inline;
+}
+
+#p5_loading {
+  opacity: 0;
+}
+
