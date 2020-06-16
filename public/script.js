@@ -33,7 +33,7 @@ function preload() {
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
   instr = select("#instructions");
-  
+
   melt.onloadeddata = (function() {
     resizeMovie();
     melt.autoplay = false;
@@ -63,6 +63,7 @@ function setup() {
 
   video.hide();
   imageMode(CENTER);
+  noCursor();
 }
 
 function draw() {
@@ -130,7 +131,7 @@ function resizeMovie() {
     top +
     "px; left: -" +
     left +
-    "px;";  
+    "px;";
 }
 
 function resizeVideo() {
