@@ -8,18 +8,9 @@ const MOVIE_HEIGHT = 1080;
 const MWH = MOVIE_WIDTH/MOVIE_HEIGHT;
 const MHW = MOVIE_HEIGHT/MOVIE_WIDTH;
 
+// Loading video
+const CORS_DELAY = 5000;
+
 let titles = ["Can you see me?", "Hello", "Yes", "I'm not sure.", "Lalala", "The cup runneth over."];
 let title = titles[0];
 let instructions = '';
-
-function load() {
-  let urlParams = new URLSearchParams(window.location.search);
-  let filename = urlParams.get("day") || 1;
-  title = titles[filename];
-  instructions = 'Day ' + filename + ': ' + title + '<br>';
-  console.log("Title:", title);
-  let video = document.getElementsByTagName('video')[0];
-  let source = document.getElementsByTagName('source')[0];
-  source.src = "https://cysm.s3.amazonaws.com/cysm-day-" + filename + ".mp4";
-  video.load();
-}

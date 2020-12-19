@@ -1,6 +1,6 @@
 // Hello, Yes, I'm not sure., Lalala., Oh god.
 
-let movie, melt;
+let movie, m_elt;
 let video;
 let vw,
   vh,
@@ -25,33 +25,50 @@ let started = false;
 
 function preload() {
   console.log("HI");
-  load();
-  // Grab the vidoe element
-  melt = select("video").elt;
+  let urlParams = new URLSearchParams(window.location.search);
+  let filename = urlParams.get("day") || 1;
+  title = titles[filename];
+  instructions = 'Day ' + filename + ': ' + title + '<br>';
+  console.log("Title:", title);
+  m_elt = document.getElementById('nini');
+  let source = m_elt.getElementsByTagName('source')[0];
+  source.src = "https://cysm.s3.amazonaws.com/cysm-day-" + filename + ".mp4";
+
+  // Re-looad data
+  m_elt.load();
+
+  // Grab the instructions
+  instr = select("#instructions");
+  setTimeout(() => {
+    // Wrap video in p5 Media Element
+    m_elt.onloadeddata = (function() {
+      // Fade it in
+      m_elt.className = "fade-in";
+      // Resize video element
+      resizeMovie(m_elt);
+      // Turn off auto-play
+      m_elt.autoplay = false;
+      movie = new p5.MediaElement(m_elt);
+      movie.pause();
+
+      //Set-up instructions
+      // Load the text
+      lines = loadStrings("instructions.txt", () => {
+        let l = 0;
+        int = setInterval(() => {
+          instr.html(instructions);
+          instructions += lines[l];
+          l++;
+          if (l >= lines.length) clearInterval(int);
+        }, 3000);
+      });
+    })(movie);
+  }, CORS_DELAY);
 }
 
 function setup() {
   let canvas = createCanvas(windowWidth, windowHeight);
-  instr = select("#instructions");
 
-  melt.onloadeddata = (function() {
-    resizeMovie();
-    melt.autoplay = false;
-    movie = new p5.MediaElement(melt);
-    movie.pause();
-
-    //Set-up instructions
-    // Load the text
-    lines = loadStrings("instructions.txt", () => {
-      let l = 0;
-      int = setInterval(() => {
-        instr.html(instructions);
-        instructions += lines[l];
-        l++;
-        if (l >= lines.length) clearInterval(int);
-      }, 3000);
-    });
-  })(movie);
 
   // Set-up webcam
   video = createCapture(VIDEO, () => {
@@ -87,6 +104,7 @@ function draw() {
 function keyPressed() {
   controls();
 }
+
 function touchStarted() {
   controls();
 }
@@ -106,7 +124,7 @@ function controls() {
 }
 
 // Resizing video
-function resizeMovie() {
+function resizeMovie(mov) {
   let top = 0;
   let left = 0;
   let w = width; //window.innerWidth;
@@ -120,9 +138,9 @@ function resizeMovie() {
     mw = h * MWH;
     left = (mw - w) / 2;
   }
-  melt.style = "width: " + mw + "px; height: " + mh + "px;";
-
-  melt.style =
+  //mov.style = "width: " + mw + "px; height: " + mh + "px;";
+  mov.style =
+    "display: block; " +
     "width: " +
     mw +
     "px; height: " +
